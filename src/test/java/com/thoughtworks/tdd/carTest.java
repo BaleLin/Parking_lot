@@ -86,4 +86,16 @@ public class carTest {
         }
     }
 
+    @Test
+    public  void should_parkingboy_can_park_be_Successfully_given_partking_lot_is_not_full(){
+        ParkingLot parkinglot =new ParkingLot(1,1);
+        try{
+            parkinglot.park(new Car());
+        }catch (ParkLotException exception){
+            fail("Should park sucessfully,but no");
+        }
+    }
+
+
+
 }

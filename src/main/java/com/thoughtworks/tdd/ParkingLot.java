@@ -7,11 +7,25 @@ import java.util.Map;
 
 public class ParkingLot {
     int size;
+    int number;
 
     Map<Receipt,Car> parkingLot = new HashMap<>();
 
     public Map<Receipt, Car> getParkingLot() {
         return parkingLot;
+    }
+
+    public ParkingLot(int number,int size) {
+        this.size = size;
+        this.number = number;
+    }
+
+    public int getNumber() {
+        return number;
+    }
+
+    public void setNumber(int number) {
+        this.number = number;
     }
 
     public void setParkingLot(Map<Receipt, Car> parkingLot) {
