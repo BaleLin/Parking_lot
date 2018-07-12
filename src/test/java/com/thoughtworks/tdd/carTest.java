@@ -2,6 +2,10 @@ package com.thoughtworks.tdd;
 
 import org.junit.jupiter.api.Test;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.CoreMatchers.not;
@@ -85,17 +89,6 @@ public class carTest {
             fail("sholud Successfully");
         }
     }
-
-    @Test
-    public  void should_parkingboy_can_park_be_Successfully_given_partking_lot_is_not_full(){
-        ParkingLot parkinglot =new ParkingLot(1,1);
-        try{
-            parkinglot.park(new Car());
-        }catch (ParkLotException exception){
-            fail("Should park sucessfully,but no");
-        }
-    }
-
 
 
 }
