@@ -9,126 +9,94 @@ import static org.fest.assertions.api.Fail.fail;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 public class carText2 {
 
     @Test
-    public void should_parkingboy_can_park_be_Successfully_given_partking_lot_1_is_not_full() {
-        ParkingLot parkingLot = new ParkingLot(1);
+    public void should_parkingboy_can_park_be_Successfully_given_partking_lot_is_not_full() {
+        ParkingLot parkingLot = mock(ParkingLot.class);
         List<ParkingLot> parkingLotlist = new ArrayList<>();
         parkingLotlist.add(parkingLot);
         ParkingBoy parkingBoy = new ParkingBoy(parkingLotlist);
         try {
-            parkingBoy.park(new Car());
+            Car car = new Car();
+           when(parkingLot.isFull()).thenReturn(false);
+           when(parkingLot.park(car)).thenReturn(new Receipt());
+           parkingBoy.park(car);
+           verify(parkingLot).park(car);
         } catch (ParkLotException exception) {
             fail("Should park sucessfully");
         }
     }
 
     @Test
-    public void should_parkingboy_should_park_be_Fail_given_partking_lot_1_is__full() {
-        ParkingLot parkingLot = new ParkingLot(0);
+    public void should_parkingboy_should_park_be_Fail_given_partking_lot_is__full() {
+        ParkingLot parkingLot = mock(ParkingLot.class);
         List<ParkingLot> parkingLotlist = new ArrayList<>();
         parkingLotlist.add(parkingLot);
         ParkingBoy parkingBoy = new ParkingBoy(parkingLotlist);
+        Car car = new Car();
         try {
-            parkingBoy.park(new Car());
-            fail("Should no park, sucessfully");
+            when(parkingLot.isFull()).thenReturn(true);
+            when(parkingLot.park(car)).thenReturn(new Receipt());
+            parkingBoy.park(car);
+            verify(parkingLot).park(car);
+            fail("Should no park,but sucessfully");
         } catch (ParkLotException exception) {
 
         }
     }
 
-    @Test
-    public void should_parkingboy_unpark_successfully_given_ticket_is_right() {
-        ParkingLot parkingLot = new ParkingLot(1);
-        List<ParkingLot> parkingLotlist = new ArrayList<>();
-        parkingLotlist.add(parkingLot);
-        ParkingBoy parkingBoy = new ParkingBoy(parkingLotlist);
-        parkingBoy.park(new Car());
-        Car thisCar = new Car();
-        Receipt recipt = parkingBoy.park(thisCar);
-        assertThat(parkingLot.unpark(recipt), is(thisCar));
-    }
-
-    @Test
-    public void should_parkingboy_unpark_fail_given_ticket_is_wrong() {
-        ParkingLot parkingLot = new ParkingLot(1);
-        List<ParkingLot> parkingLotlist = new ArrayList<>();
-        parkingLotlist.add(parkingLot);
-        ParkingBoy parkingBoy = new ParkingBoy(parkingLotlist);
-        Car thisCar = new Car();
-        Receipt recipt = parkingBoy.park(thisCar);
-        Receipt otherrecipt = new Receipt();
-        assertThat(parkingLot.unpark(otherrecipt), not(thisCar));
-    }
-
-    @Test
-    public void should_parkingboy_be_ture_given_Parking_lot_is_full() {
-        ParkingLot parkingLot = new ParkingLot(0);
-        List<ParkingLot> parkingLotlist = new ArrayList<>();
-        parkingLotlist.add(parkingLot);
-        ParkingBoy parkingBoy = new ParkingBoy(parkingLotlist);
-        assertThat(parkingBoy.isFull(), is(true));
-    }
-
-    @Test
-    public void should_parkingboy_be_false_given_Parking_lot_is_no_full() {
-        ParkingLot parkingLot = new ParkingLot(1);
-        List<ParkingLot> parkingLotlist = new ArrayList<>();
-        parkingLotlist.add(parkingLot);
-        ParkingBoy parkingBoy = new ParkingBoy(parkingLotlist);
-        assertThat(parkingBoy.isFull(), is(false));
-    }
 
     @Test
     public void should_parkingboy_can_park_Successfully_given_more_partking_lot_is_not_full() {
-        ParkingLot parkingLot1 = new ParkingLot(0);
-        ParkingLot parkingLot2 = new ParkingLot(2);
+        ParkingLot parkingLot1 = mock(ParkingLot.class);
+        ParkingLot parkingLot2 = mock(ParkingLot.class);
         List<ParkingLot> parkingLotlist = new ArrayList<>();
         parkingLotlist.add(parkingLot1);
         parkingLotlist.add(parkingLot2);
         ParkingBoy parkingBoy = new ParkingBoy(parkingLotlist);
+        Car car1 = new Car();
+        Car car2 = new Car();
         try {
-            parkingBoy.park(new Car());
-            parkingBoy.park(new Car());
+            when(parkingLot1.isFull()).thenReturn(false);
+            when(parkingLot2.isFull()).thenReturn(false);
+               when(parkingLot1.park(car1)).thenReturn(new Receipt());
+            when(parkingLot2.park(car2)).thenReturn(new Receipt());
+            parkingBoy.park(car1);
+            parkingBoy.park(car2);
         } catch (ParkLotException exception) {
             fail("Should park sucessfully");
         }
     }
 
-    @Test
-    public void should_parkingboy_can_unpark_be_Successfully_given_more_partking_lot__is_not_full() {
-        ParkingLot parkingLot1 = new ParkingLot(0);
-        ParkingLot parkingLot2 = new ParkingLot(1);
-        List<ParkingLot> parkingLotlist = new ArrayList<>();
-        parkingLotlist.add(parkingLot1);
-        parkingLotlist.add(parkingLot2);
-        ParkingBoy parkingBoy = new ParkingBoy(parkingLotlist);
-        Car car1 = new Car();
-        Car car2 = new Car();
-        Receipt recipt1 = parkingBoy.park(car1);
-        Receipt recipt2 = parkingBoy.park(car2);
-        assertThat(parkingBoy.unpark(recipt1), is(car1));
-        assertThat(parkingBoy.unpark(recipt2), is(car2));
-    }
 
     @Test
-    public void should_parkingboy_can_park_be_successful_given_more_partking_lot__is_not_full() {
-        ParkingLot parkingLot1 = new ParkingLot(1);
-        ParkingLot parkingLot2 = new ParkingLot(1);
+    public void should_park_successfully_when_call_park_again_given_a_full_parking_lot_take_out_of_car() {
+        ParkingLot parkingLot = mock(ParkingLot.class);
         List<ParkingLot> parkingLotlist = new ArrayList<>();
-        parkingLotlist.add(parkingLot1);
-        parkingLotlist.add(parkingLot2);
+        parkingLotlist.add(parkingLot);
         ParkingBoy parkingBoy = new ParkingBoy(parkingLotlist);
-        Car car1 = new Car();
-        Car car2 = new Car();
-        Receipt recipt1 = parkingBoy.park(car1);
-        Receipt recipt2 = parkingBoy.park(car2);
-        assertThat(parkingBoy.unpark(recipt1), is(car1));
-        assertThat(parkingBoy.unpark(recipt2), is(car2));
+        Car car = new Car();
+        Receipt receipt = new Receipt();
+        when(parkingLot.park(car)).thenReturn(receipt);
+        Receipt thisreceipt = parkingBoy.park(car);
+        when(parkingLot.unpark(thisreceipt)).thenReturn(car);
+        parkingBoy.unpark(thisreceipt);
+        try {
+            Receipt secondReceipt = new Receipt();
+            Car car2 = new Car();
+             when(parkingLot.park(car2)).thenReturn(secondReceipt);
+           parkingBoy.park(car2);
+            verify(parkingLot).park(car);
+           verify(parkingLot).park(car2);
+        } catch (ParkLotException e) {
+            fail("should park successfully");
+        }
     }
-
     @Test
     public void should_parkingboy_can_park_order_when__given_more_partking_lot__is_not_full() {
         ParkingLot parkingLot1 = new ParkingLot(1);
@@ -142,19 +110,6 @@ public class carText2 {
         assertThat(parkingLotlist.get(0).unpark(recipt1), is(car1));
 
     }
-    @Test
-    public void should_park_successfully_when_call_park_again_given_a_full_parking_lot_take_out_of_car() {
-        ParkingLot parkingLot = new ParkingLot(1);
-        List<ParkingLot> parkingLotlist = new ArrayList<>();
-        parkingLotlist.add(parkingLot);
-        ParkingBoy parkingBoy = new ParkingBoy(parkingLotlist);
-        Receipt receipt = parkingBoy.park(new Car());
-        parkingBoy.unpark(receipt);
-        try {
-            parkingBoy.park(new Car());
-        } catch (ParkLotException e) {
-            fail("should park successfully");
-        }
-    }
+
 
 }

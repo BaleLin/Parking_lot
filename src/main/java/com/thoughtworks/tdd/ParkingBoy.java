@@ -30,7 +30,6 @@ public class ParkingBoy {
             throw new ParkLotException("all parkingLot is full");
         }
         return collect.get(0).park(car);
-//            }
     }
 
     public Car unpark(Receipt recipt) {
