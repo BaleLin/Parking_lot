@@ -99,15 +99,20 @@ public class carText2 {
     }
     @Test
     public void should_parkingboy_can_park_order_when__given_more_partking_lot__is_not_full() {
-        ParkingLot parkingLot1 = new ParkingLot(1);
-        ParkingLot parkingLot2 = new ParkingLot(1);
+        ParkingLot parkingLot1 = mock(ParkingLot.class);
+        ParkingLot parkingLot2 = mock(ParkingLot.class);
         List<ParkingLot> parkingLotlist = new ArrayList<>();
         parkingLotlist.add(parkingLot1);
         parkingLotlist.add(parkingLot2);
         ParkingBoy parkingBoy = new ParkingBoy(parkingLotlist);
         Car car1 = new Car();
-        Receipt recipt1 = parkingBoy.park(car1);
+        Receipt recipt1 = new Receipt();
+        when(parkingLot1.isFull()).thenReturn(false);
+        parkingBoy.park(car1);
+        when(parkingLot1.unpark(recipt1)).thenReturn(car1);
         assertThat(parkingLotlist.get(0).unpark(recipt1), is(car1));
+        verify(parkingLot1).park(car1);
+
 
     }
 
